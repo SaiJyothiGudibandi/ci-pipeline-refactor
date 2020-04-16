@@ -1,0 +1,2 @@
+Opinionated scm checkout. Chekout is done in it's own stage using. This step also cleans up the workspace before
+fetching the code

@@ -1,0 +1,52 @@
+# Copyright 2020 Google LLC. This software is provided as is, without warranty or representation for any use or purpose.
+# Your use of it is subject to your agreement with Google.
+
+- name: compile
+  source: "."
+  image:
+    name: maven:3-alpine
+    docker_run_params: '-v $HOME/.m2:/root/.m2'
+  commands:
+    - "echo mvn build"
+
+- name: test
+  source: "."
+  image:
+    name: maven:3-alpine
+    docker_run_params: '-v $HOME/.m2:/root/.m2'
+  commands:
+    - "echo mvn test"
+    - "mkdir output"
+    - "echo test-string > output/testfile.txt"
+  artifacts:
+    - output/testfile.txt
+
+- name: build
+  source: "."
+  image:
+    name: maven:3-alpine
+    docker_run params: '-v $HOME/.m2:/root/.m2'
+  commands:
+    - "echo mvn build"
+    - "mkdir targets"
+    - "echo testing-creating-jar > targets/1.0-snapshot.jar"
+  artifacts:
+    - targets/*.jar
+
+- name: pytest
+  source: "."
+  image:
+    name: python:latest
+    docker_run_params: '-u root'
+  commands:
+    - "python --version"
+
+- name: pytest-from-dockerfile
+  source: "."
+  image:
+    docker_run_params: '-u root'
+    Dockerfile: "resources/Dockerfile"
+  commands:
+    - "python --version"
+    - ls -l
+    - pwd

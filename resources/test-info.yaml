@@ -1,0 +1,15 @@
+# Copyright 2020 Google LLC. This software is provided as is, without warranty or representation for any use or purpose.
+# Your use of it is subject to your agreement with Google.
+
+- name: pytest
+  source: "."
+  image:
+    name: python:3.8.2-alpine3.11
+    docker_run_params: '-u root'
+  commands:
+    - "python --version"
+  junit: resources/junit.xml
+
+- name: pytest-junit-only
+  source: "."
+  junit: resources/junit.xml

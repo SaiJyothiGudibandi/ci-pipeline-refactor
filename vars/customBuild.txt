@@ -1,0 +1,49 @@
+Opinionated closure that executes in it's own node. The closure expects `yamlConfig` parameter to be defined. If
+parameter is not defined then `build-info.yaml` is expected in the current workspace.
+Example:
+```
+customBuild {
+  yamlConfig = "build-info.yaml"
+}
+```
+
+Where build-info.yaml can be something like this:
+```
+- name: compile
+  source: "."
+  image:
+    name: maven:3-alpine
+    docker_run_params: '-v $HOME/.m2:/root/.m2'
+  commands:
+    - "echo mvn build"
+
+- name: build
+  source: "."
+  image:
+    name: maven:3-alpine
+    docker_run params: '-v $HOME/.m2:/root/.m2'
+  commands:
+    - "echo mvn build"
+    - "mkdir targets"
+    - "echo testing-creating-jar > targets/1.0-snapshot.jar"
+  artifacts:
+    - targets/*.jar
+
+- name: pytest
+  source: "."
+  image:
+    name: python:latest
+    docker_run_params: '-u root'
+  commands:
+    - "python --version"
+
+- name: pytest-from-dockerfile
+  source: "."
+  image:
+    docker_run_params: '-u root'
+    Dockerfile: "resources/Dockerfile"
+  commands:
+    - "python --version"
+    - ls -l
+    - pw
+```
