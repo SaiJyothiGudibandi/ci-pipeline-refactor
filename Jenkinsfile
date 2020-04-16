@@ -2,7 +2,6 @@
  * Your use of it is subject to your agreement with Google.
  */
 
-@Library('sample-pipeline@ci-pipeline-refactor') _
 properties([pipelineTriggers([githubPush()])])
 examplePipeline build_config: "resources/build-info.yaml",
  test_config: "resources/test-info.yaml",
